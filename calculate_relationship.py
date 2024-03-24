@@ -33,9 +33,6 @@ def determine_relation(main_qi, guest_qi):
     main_element = extract_element_from_string(main_qi)
     guest_element = extract_element_from_string(guest_qi)
 
-    print(main_element)
-    print(guest_element)
-
     if not main_element or not guest_element:
         return "未知的主气或客气"
 

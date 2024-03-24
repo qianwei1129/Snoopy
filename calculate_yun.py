@@ -80,11 +80,13 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
             else:
                 return main_yun_sequence[i - 1], guest_yun_sequence[i - 1], i
 
+    return main_yun_sequence[-1], guest_yun_sequence[-1], 5
+
 
 if __name__ == '__main__':
-    year = 1995
-    month = 3
-    day = 15
+    year = 1921
+    month = 7
+    day = 21
     lichun_month, lichun_day = get_lichun_year(year)
     lichun_month = int(lichun_month)
     lichun_day = int(lichun_day)

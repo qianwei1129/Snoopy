@@ -91,6 +91,8 @@ def get_guest_qi(year, lichun_month, lichun_day, query_month, query_day, si_tian
             else:
                 return guest_qi_sequence[i - 1], i
 
+    return guest_qi_sequence[-1], 6
+
 
 if __name__ == '__main__':
     from main import get_si_tian_zhi_qi
