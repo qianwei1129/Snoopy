@@ -71,11 +71,7 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
     main_yun_sequence = calculate_main_yun(sui_yun)
     guest_yun_sequence = calculate_guest_yun(sui_yun)
 
-    print(main_yun_sequence)
-    print(guest_yun_sequence)
-
     step_yun_dates = [lichun_date + timedelta(days=i * 60) for i in range(5)]
-    print(step_yun_dates)
 
     for i, step_date in enumerate(step_yun_dates):
         if query_date < step_date:

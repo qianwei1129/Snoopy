@@ -1,7 +1,8 @@
 import ephem
 from calculate_qi import get_main_qi, get_guest_qi, get_lichun_year
-from calculate_yun import calculate_main_yun, calculate_guest_yun, calculate_yun
-from datetime import datetime, timedelta
+from calculate_yun import calculate_yun
+from datetime import datetime
+from calculate_relationship import determine_relation
 
 
 def get_tian_gan(year, query_month, query_day, lichun_month, lichun_day):
@@ -175,6 +176,7 @@ def calculate(year, month, day):
     main_qi = get_main_qi(lichun_month, lichun_day, month, day)
     guest_qi, ji_zhi_qi = get_guest_qi(year, lichun_month, lichun_day, month, day, si_tian_zhi_qi, zai_quan_zhi_qi)
 
+    relationship = determine_relation(main_qi, guest_qi)
     yun_qi_tong_hua = get_yun_qi_tong_hua(tian_gan + di_zhi)
     yun_qi_yi_hua = get_yun_qi_yi_hua(tian_gan + di_zhi)
 
@@ -196,6 +198,9 @@ def calculate(year, month, day):
     print(f'主气: {main_qi}')
     print(f'客气: {guest_qi}')
     print(f'属于几之气: {ji_zhi_qi}')
+    print("----------------")
+    print(f'相得与否： {relationship[0]}')
+    print(f'顺逆： {relationship[1]}')
     print("----------------")
     print(f'运气异化： {yun_qi_yi_hua}')
     print(f'运气同化: {yun_qi_tong_hua}')
