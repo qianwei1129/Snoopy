@@ -179,10 +179,6 @@ def calculate(year, month, day):
     yun_qi_tong_hua = get_yun_qi_tong_hua(tian_gan + di_zhi)
     yun_qi_yi_hua = get_yun_qi_yi_hua(tian_gan + di_zhi)
 
-    return yun_qi_xiang_he, sui_yun, si_tian_zhi_qi, zai_quan_zhi_qi,\
-           main_yun, guest_yun, ji_zhi_yun, main_qi, guest_qi, ji_zhi_qi, \
-           relationship[0], relationship[1], yun_qi_tong_hua, yun_qi_yi_hua
-
     print(f'年: {year}')
     print(f'月: {month}')
     print(f'日: {day}')
@@ -208,7 +204,10 @@ def calculate(year, month, day):
     print(f'运气异化： {yun_qi_yi_hua}')
     print(f'运气同化: {yun_qi_tong_hua}')
 
+    return yun_qi_xiang_he, sui_yun, si_tian_zhi_qi, zai_quan_zhi_qi,\
+           main_yun, guest_yun, ji_zhi_yun, main_qi, guest_qi, ji_zhi_qi, \
+           relationship[0], relationship[1], yun_qi_tong_hua, yun_qi_yi_hua
+
 
 if __name__ == '__main__':
-    print(calculate(1928, 12, 3))
-    print(calculate(2024, 7, 8))
+    calculate(2003, 9, 8)
