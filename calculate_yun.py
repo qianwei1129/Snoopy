@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from calculate_qi import get_lichun_year
+from calculate_qi import get_lichun_year, get_dahan_year
 
 
 def calculate_main_yun(sui_yun):
@@ -71,10 +71,13 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
     main_yun_sequence = calculate_main_yun(sui_yun)
     guest_yun_sequence = calculate_guest_yun(sui_yun)
 
+    print(main_yun_sequence)
+    print(guest_yun_sequence)
+
     step_yun_dates = [lichun_date + timedelta(days=i * 60) for i in range(5)]
 
     for i, step_date in enumerate(step_yun_dates):
-        if query_date < step_date:
+        if query_date <= step_date:
             if i == 0:
                 return main_yun_sequence[-1], guest_yun_sequence[-1], 5
             else:
@@ -84,14 +87,14 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
 
 
 if __name__ == '__main__':
-    year = 1921
-    month = 7
-    day = 21
-    lichun_month, lichun_day = get_lichun_year(year)
+    year = 2024
+    month = 1
+    day = 19
+    lichun_month, lichun_day = get_dahan_year(year)
     lichun_month = int(lichun_month)
     lichun_day = int(lichun_day)
 
-    sui_yun = "金运不及"
+    sui_yun = "火运不及"
     main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
     print(main_yun, guest_yun, ji_zhi_yun)
 

@@ -2,6 +2,22 @@ import ephem
 from datetime import datetime, timedelta
 
 
+def get_dahan_year(year):
+    """
+    获取对应每年大寒的时间，并格式化为年月日的形式
+    :param year: 年份
+    :return: 返回立春的日期，格式为"YYYY-MM-DD"
+    """
+    start_date = f"{year}/2/3"
+    spring_equinox = ephem.next_vernal_equinox(start_date)
+    lichun_date = ephem.Date(spring_equinox - 45 - 15)
+    formatted_lichun_date_year = lichun_date.datetime().strftime('%Y')
+    formatted_lichun_date_month = lichun_date.datetime().strftime('%m')
+    formatted_lichun_date_date = lichun_date.datetime().strftime('%d')
+
+    return formatted_lichun_date_month, formatted_lichun_date_date
+
+
 def get_lichun_year(year):
     """
     获取对应每年立春的时间，并格式化为年月日的形式
@@ -85,7 +101,7 @@ def get_guest_qi(year, lichun_month, lichun_day, query_month, query_day, si_tian
     step_qi_dates = [lichun_date + timedelta(days=i * 60) for i in range(6)]
 
     for i, step_date in enumerate(step_qi_dates):
-        if query_date < step_date:
+        if query_date <= step_date:
             if i == 0:
                 return guest_qi_sequence[-1], 6
             else:

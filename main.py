@@ -1,4 +1,4 @@
-from calculate_qi import get_main_qi, get_guest_qi, get_lichun_year
+from calculate_qi import get_main_qi, get_guest_qi, get_lichun_year, get_dahan_year
 from calculate_yun import calculate_yun
 from datetime import datetime
 from calculate_relationship import determine_relation
@@ -156,7 +156,7 @@ def get_yun_qi_xiang_he(gan_zhi):
     return result
 
 
-def calculate(year, month, day):
+def calculate_lichun(year, month, day):
     lichun_month, lichun_day = get_lichun_year(year)
     lichun_month = int(lichun_month)
     lichun_day = int(lichun_day)
@@ -204,10 +204,63 @@ def calculate(year, month, day):
     print(f'运气异化： {yun_qi_yi_hua}')
     print(f'运气同化: {yun_qi_tong_hua}')
 
-    return yun_qi_xiang_he, sui_yun, si_tian_zhi_qi, zai_quan_zhi_qi,\
+    return yun_qi_xiang_he, sui_yun, si_tian_zhi_qi, zai_quan_zhi_qi, \
+           main_yun, guest_yun, ji_zhi_yun, main_qi, guest_qi, ji_zhi_qi, \
+           relationship[0], relationship[1], yun_qi_tong_hua, yun_qi_yi_hua
+
+
+def calculate_dahan(year, month, day):
+    dahan_month, dahan_day = get_dahan_year(year)
+    dahan_month = int(dahan_month)
+    dahan_day = int(dahan_day)
+
+    tian_gan = get_tian_gan(year, month, day, dahan_month, dahan_day)
+    di_zhi = get_di_zhi(year, month, day, dahan_month, dahan_day)
+    sui_yun = get_sui_yun(tian_gan)
+
+    si_tian_zhi_qi = get_si_tian_zhi_qi(di_zhi)
+    zai_quan_zhi_qi = get_zai_quan_zhi_qi(di_zhi)
+    si_tian_zai_quan = get_si_tian_zai_quan(si_tian_zhi_qi, zai_quan_zhi_qi)
+
+    yun_qi_xiang_he = get_yun_qi_xiang_he(tian_gan + di_zhi)
+    main_yun, guest_yun, ji_zhi_yun = \
+        calculate_yun(year, dahan_month, dahan_day, month, day, sui_yun)
+    main_qi = get_main_qi(dahan_month, dahan_day, month, day)
+    guest_qi, ji_zhi_qi = get_guest_qi(year, dahan_month, dahan_day, month, day, si_tian_zhi_qi, zai_quan_zhi_qi)
+
+    relationship = determine_relation(main_qi, guest_qi)
+    yun_qi_tong_hua = get_yun_qi_tong_hua(tian_gan + di_zhi)
+    yun_qi_yi_hua = get_yun_qi_yi_hua(tian_gan + di_zhi)
+
+    print(f'年: {year}')
+    print(f'月: {month}')
+    print(f'日: {day}')
+    print("----------------")
+    print(f'天干地支: {tian_gan}{di_zhi}')
+    print(f'岁运: {sui_yun}')
+    print("----------------")
+    print(f'司天之气: {si_tian_zhi_qi}')
+    print(f'在泉之气: {zai_quan_zhi_qi}')
+    # print(f'司天在泉： {si_tian_zai_quan}')
+    print("----------------")
+    print(f'运气相合： {yun_qi_xiang_he}')
+    print(f'主运: {main_yun}')
+    print(f'客运: {guest_yun}')
+    print(f'属于几之运: {ji_zhi_yun}')
+    print(f'主气: {main_qi}')
+    print(f'客气: {guest_qi}')
+    print(f'属于几之气: {ji_zhi_qi}')
+    print("----------------")
+    print(f'相得与否： {relationship[0]}')
+    print(f'顺逆： {relationship[1]}')
+    print("----------------")
+    print(f'运气异化： {yun_qi_yi_hua}')
+    print(f'运气同化: {yun_qi_tong_hua}')
+
+    return yun_qi_xiang_he, sui_yun, si_tian_zhi_qi, zai_quan_zhi_qi, \
            main_yun, guest_yun, ji_zhi_yun, main_qi, guest_qi, ji_zhi_qi, \
            relationship[0], relationship[1], yun_qi_tong_hua, yun_qi_yi_hua
 
 
 if __name__ == '__main__':
-    calculate(2003, 9, 8)
+    calculate_dahan(2024, 1, 19)
