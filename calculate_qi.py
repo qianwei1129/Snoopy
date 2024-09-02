@@ -1,4 +1,5 @@
 import ephem
+import sxtwl
 from datetime import datetime, timedelta
 
 
@@ -11,11 +12,29 @@ def get_dahan_year(year):
     start_date = f"{year}/2/3"
     spring_equinox = ephem.next_vernal_equinox(start_date)
     lichun_date = ephem.Date(spring_equinox - 45 - 15)
-    formatted_lichun_date_year = lichun_date.datetime().strftime('%Y')
-    formatted_lichun_date_month = lichun_date.datetime().strftime('%m')
-    formatted_lichun_date_date = lichun_date.datetime().strftime('%d')
 
-    return formatted_lichun_date_month, formatted_lichun_date_date
+    formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+    formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+    formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
+
+    day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+    if day.hasJieQi():
+        return formatted_lichun_date_month, formatted_lichun_date_date
+    else:
+        lichun_date = ephem.Date(spring_equinox - 45 - 14)
+        formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+        formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+        formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
+        day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+        if day.hasJieQi():
+            return formatted_lichun_date_month, formatted_lichun_date_date
+        else:
+            lichun_date = ephem.Date(spring_equinox - 45 - 16)
+            formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+            formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+            formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
+            day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+            return formatted_lichun_date_month, formatted_lichun_date_date
 
 
 def get_lichun_year(year):
@@ -27,20 +46,38 @@ def get_lichun_year(year):
     start_date = f"{year}/2/3"
     spring_equinox = ephem.next_vernal_equinox(start_date)
     lichun_date = ephem.Date(spring_equinox - 45)
-    formatted_lichun_date_year = lichun_date.datetime().strftime('%Y')
-    formatted_lichun_date_month = lichun_date.datetime().strftime('%m')
-    formatted_lichun_date_date = lichun_date.datetime().strftime('%d')
-
-    return formatted_lichun_date_month, formatted_lichun_date_date
+    formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+    formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+    formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
 
 
-def get_main_qi(lichun_month, lichun_day, query_month, query_day):
+    day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+    if day.hasJieQi():
+        return formatted_lichun_date_month, formatted_lichun_date_date
+    else:
+        lichun_date = ephem.Date(spring_equinox - 45 - 1)
+        formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+        formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+        formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
+        day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+        if day.hasJieQi():
+            return formatted_lichun_date_month, formatted_lichun_date_date
+        else:
+            lichun_date = ephem.Date(spring_equinox - 45 + 1)
+            formatted_lichun_date_year = int(lichun_date.datetime().strftime('%Y'))
+            formatted_lichun_date_month = int(lichun_date.datetime().strftime('%m'))
+            formatted_lichun_date_date = int(lichun_date.datetime().strftime('%d'))
+            day = sxtwl.fromSolar(formatted_lichun_date_year, formatted_lichun_date_month, formatted_lichun_date_date)
+            return formatted_lichun_date_month, formatted_lichun_date_date
+
+
+def get_main_qi_lichun(lichun_month, lichun_day, query_month, query_day):
     """
     用于计算主气
     :param lichun_month: 立春对应的月
     :param lichun_day: 立春对应的天
     :param query_month: 研究的月
-    :param query_day: 研究的月
+    :param query_day: 研究的天
     :return: 主气
     """
     main_qi = ['厥阴风木', '少阴君火', '少阳相火', '太阴湿土', '阳明燥金', '太阳寒水']
@@ -54,6 +91,30 @@ def get_main_qi(lichun_month, lichun_day, query_month, query_day):
     for i, step_date in enumerate(step_qi_dates):
         if query_date < step_date:
             return main_qi[i - 1] if i > 0 else main_qi[-1]
+
+    return main_qi[-1]
+
+
+def get_main_qi_dahan(lichun_month, lichun_day, query_month, query_day):
+    """
+    用于计算主气
+    :param lichun_month: 立春对应的月
+    :param lichun_day: 立春对应的天
+    :param query_month: 研究的月
+    :param query_day: 研究的天
+    :return: 主气
+    """
+    main_qi = ['厥阴风木', '少阴君火', '少阳相火', '太阴湿土', '阳明燥金', '太阳寒水']
+
+    lichun_date = datetime(year=datetime.now().year, month=lichun_month, day=lichun_day)
+
+    query_date = datetime(year=datetime.now().year, month=query_month, day=query_day)
+
+    step_qi_dates = [lichun_date + timedelta(days=i * 60) for i in range(6)]
+
+    for i, step_date in enumerate(step_qi_dates):
+        if query_date < step_date:
+            return main_qi[i - 2] if i > 0 else main_qi[-1]
 
     return main_qi[-1]
 
@@ -116,17 +177,16 @@ if __name__ == '__main__':
     from main import get_di_zhi
 
     year = 2023
-    month = 2
-    day = 1
+    month = 4
+    day = 3
 
     lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
 
     di_zhi = get_di_zhi(year, month, day, lichun_month, lichun_day)
 
     si_tian_zhi_qi = get_si_tian_zhi_qi(di_zhi)
     zai_quan_zhi_qi = get_zai_quan_zhi_qi(di_zhi)
 
+    main_qi = get_main_qi_lichun(lichun_month, lichun_day, month, day)
     guest_qi = get_guest_qi(year, lichun_month, lichun_day, month, day, si_tian_zhi_qi, zai_quan_zhi_qi)
-    print(guest_qi)
+    print(main_qi, guest_qi)
