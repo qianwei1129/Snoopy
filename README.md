@@ -60,7 +60,7 @@ determine_relation(main_qi, guest_qi)
 此函数会返回指定日期的主气、客气的关系
 
 
-## 9. 关系推导
+## 与流感等病症实例进行分析的流程
 
 步骤1：从原始数据中提取每个样本的出生运气和发病时的中医运气情况。
 
@@ -69,3 +69,28 @@ determine_relation(main_qi, guest_qi)
 步骤3：对每个样本，根据其发病时表现出的运气，在相应的运气列下填入1，未表现出的填入0。
 
 步骤4：使用这个转换后的数据表来分析和比较不同出生运气与发病时运气之间的相关性，从而找出可能的模式或趋势。
+
+
+## 小备注：总是无法push到github的方法
+
+### 取消原代理设置
+
+```cmd
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
+
+### 刷新 DNS 解析缓存
+
+```cmd
+ipconfig /flushdns
+```
+
+### 重新设置代理
+
+```cmd
+git config --global https.proxy http://127.0.0.1:7890
+git config --global https.proxy https://127.0.0.1:7890
+```
+
+其中的7890来自于网络与Internet代理设置里面的本机端口号
