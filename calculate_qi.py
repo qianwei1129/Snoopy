@@ -7,7 +7,7 @@ def get_dahan_year(year):
     """
     获取对应每年大寒的时间，并格式化为年月日的形式
     :param year: 年份
-    :return: 返回立春的日期，格式为"YYYY-MM-DD"
+    :return: 返回大寒的日期，格式为"YYYY-MM-DD"
     """
     start_date = f"{year}/2/3"
     spring_equinox = ephem.next_vernal_equinox(start_date)
@@ -171,16 +171,58 @@ def get_guest_qi(year, lichun_month, lichun_day, query_month, query_day, si_tian
     return guest_qi_sequence[-1], 6
 
 
-if __name__ == '__main__':
-    from main import get_si_tian_zhi_qi
-    from main import get_zai_quan_zhi_qi
-    from main import get_di_zhi
+def get_di_zhi(year, query_month, query_day, lichun_month, lichun_day):
+    """
+    用于获取对应年份的地支
+    :param lichun_day:
+    :param lichun_month:
+    :param query_day:
+    :param query_month:
+    :param year: 年份
+    :return: 年对应的地支
+    """
+    di_zhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥']
 
-    year = 2023
-    month = 4
-    day = 3
+    lichun_date = datetime(year=year, month=lichun_month, day=lichun_day)
+    query_date = datetime(year=year, month=query_month, day=query_day)
 
-    lichun_month, lichun_day = get_lichun_year(year)
+    if query_date < lichun_date:
+        return di_zhi[(year - 4) % 12 - 1]
+    else:
+        return di_zhi[(year - 4) % 12]
+
+
+def get_si_tian_zhi_qi(di_zhi):
+    """
+    用于获取司天之气的信息
+    :param di_zhi: 地支
+    :return: 年份对应的司天之气
+    """
+    si_tian_mapping = {
+        '子': '少阴君火', '丑': '太阴湿土', '寅': '少阳相火', '卯': '阳明燥金', '辰': '太阳寒水', '巳': '厥阴风木',
+        '午': '少阴君火', '未': '太阴湿土', '申': '少阳相火', '酉': '阳明燥金', '戌': '太阳寒水', '亥': '厥阴风木'
+    }
+    return si_tian_mapping[di_zhi]
+
+
+def get_zai_quan_zhi_qi(di_zhi):
+    """
+    用于获取在泉之气的新信息
+    :param di_zhi: 地支
+    :return: 年份对应的在泉之气
+    """
+    zai_quan_mapping = {
+        '子': '阳明燥金', '丑': '太阳寒水', '寅': '厥阴风木', '卯': '少阴君火', '辰': '太阴湿土', '巳': '少阳相火',
+        '午': '阳明燥金', '未': '太阳寒水', '申': '厥阴风木', '酉': '少阴君火', '戌': '太阴湿土', '亥': '少阳相火'
+    }
+    return zai_quan_mapping[di_zhi]
+
+
+def get_qi(year, month, day, start = "lichun"):
+    if(start == "lichun"):
+        lichun_month, lichun_day = get_lichun_year(year)
+    else:
+        lichun_month, lichun_day = get_dahan_year(year)
 
     di_zhi = get_di_zhi(year, month, day, lichun_month, lichun_day)
 
@@ -189,4 +231,13 @@ if __name__ == '__main__':
 
     main_qi = get_main_qi_lichun(lichun_month, lichun_day, month, day)
     guest_qi = get_guest_qi(year, lichun_month, lichun_day, month, day, si_tian_zhi_qi, zai_quan_zhi_qi)
-    print(main_qi, guest_qi)
+
+    return(main_qi, guest_qi[0], guest_qi[1], si_tian_zhi_qi, zai_quan_zhi_qi)
+
+
+if __name__ == '__main__':
+    year = 2023
+    month = 4
+    day = 3
+
+    print(get_qi(year, month, day, start="lichun"))

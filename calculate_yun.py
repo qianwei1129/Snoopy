@@ -71,9 +71,6 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
     main_yun_sequence = calculate_main_yun(sui_yun)
     guest_yun_sequence = calculate_guest_yun(sui_yun)
 
-    print(main_yun_sequence)
-    print(guest_yun_sequence)
-
     step_yun_dates = [lichun_date + timedelta(days=i * 60) for i in range(5)]
 
     for i, step_date in enumerate(step_yun_dates):
@@ -86,91 +83,24 @@ def calculate_yun(year, lichun_month, lichun_day, query_month, query_day, sui_yu
     return main_yun_sequence[-1], guest_yun_sequence[-1], 5
 
 
+def get_yun(year, month, day, sui_yun, start = "lichun"):
+    if(start == "lichun"):
+        lichun_month, lichun_day = get_lichun_year(year)
+    else:
+        lichun_month, lichun_day = get_dahan_year(year)
+    lichun_month = int(lichun_month)
+    lichun_day = int(lichun_day)
+
+    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
+    return(main_yun, guest_yun, ji_zhi_yun)
+
+
 if __name__ == '__main__':
+
     year = 2024
     month = 1
     day = 19
-    lichun_month, lichun_day = get_dahan_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
 
     sui_yun = "火运不及"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
 
-    year = 2024
-    month = 2
-    day = 3
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "火运不及"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 2024
-    month = 2
-    day = 4
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "土运太过"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 2023
-    month = 2
-    day = 1
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "木运太过"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 2023
-    month = 2
-    day = 4
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "火运不及"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 2008
-    month = 6
-    day = 12
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "火运太过"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 1992
-    month = 2
-    day = 3
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "水运不及"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
-
-    year = 1992
-    month = 2
-    day = 4
-    lichun_month, lichun_day = get_lichun_year(year)
-    lichun_month = int(lichun_month)
-    lichun_day = int(lichun_day)
-
-    sui_yun = "木运太过"
-    main_yun, guest_yun, ji_zhi_yun = calculate_yun(year, lichun_month, lichun_day, month, day, sui_yun)
-    print(main_yun, guest_yun, ji_zhi_yun)
+    print(get_yun(year, month, day, sui_yun, start="lichun"))
