@@ -161,6 +161,13 @@ def get_yun_qi_xiang_he(gan_zhi):
 
 
 def calculate(year, month, day):
+    """
+    用于计算指定年月日的天干地支信息
+    :param year: 年
+    :param month: 月
+    :param day: 日
+    :return:返回值包括主气、客气、几之气、主运、客运、几之运、司天之气和在泉之气。
+    """
 
     tian_gan = get_tian_gan(year, month, day)
 
