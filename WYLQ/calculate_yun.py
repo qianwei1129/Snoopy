@@ -3,6 +3,11 @@ from calculate_qi import get_lichun_year, get_dahan_year
 
 
 def calculate_main_yun(sui_yun):
+    """
+    计算主运
+    :param sui_yun:岁运
+    :return: 返回指定日期的主运
+    """
     elements_sequence = ['木', '火', '土', '金', '水']
     yun_mapping = {'木': '角', '火': '徵', '土': '宫', '金': '商', '水': '羽'}
 
